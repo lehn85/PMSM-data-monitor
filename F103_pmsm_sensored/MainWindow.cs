@@ -42,10 +42,7 @@ namespace F103_pmsm_sensored
         {
             InitializeComponent();
 
-            sp = new SerialPort("COM20", 1152000, Parity.None, 8);
-            sp.StopBits = StopBits.One;
-            sp.ReadTimeout = 100;
-            sp.WriteTimeout = 100;
+            bt_scan_ports_Click(null, null);
 
             tb_minYaxis.Add(tb_minY1);
             tb_minYaxis.Add(tb_minY2);
@@ -65,8 +62,6 @@ namespace F103_pmsm_sensored
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            bt_connect_Click(null, null);
-
             zc1.MasterPane.PaneList.Clear();
 
             for (int i = 0; i < DataPacketNormal.nVar100us; i++)
@@ -82,6 +77,22 @@ namespace F103_pmsm_sensored
             autoRefreshTimer = new System.Windows.Forms.Timer();
             autoRefreshTimer.Interval = (int)nud_autorefreshinterval.Value;
             autoRefreshTimer.Tick += AutoRefreshTimer_Tick;
+
+            refreshUI();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // stop refresh
+            autoRefreshTimer.Stop();
+
+            // close serial port
+            bt_close_port_Click(null, null);
         }
 
         private void AutoRefreshTimer_Tick(object sender, EventArgs e)
@@ -89,8 +100,49 @@ namespace F103_pmsm_sensored
             bt_refresh_Click(null, null);
         }
 
+        private void refreshUI()
+        {
+            bool serialPortOpened = sp != null && sp.IsOpen;
+            // those are enabled when port doesn't open
+            bt_scan_ports.Enabled = !serialPortOpened;
+            bt_open_port.Enabled = !serialPortOpened && comboBox_com_ports.Items.Count > 0;
+
+            // those are enable when port open
+            bt_close_port.Enabled = serialPortOpened;
+            bt_sendstart.Enabled = serialPortOpened;
+            bt_sendstop.Enabled = serialPortOpened;
+            bt_refresh.Enabled = serialPortOpened;
+            chbox_autorefresh.Enabled = serialPortOpened;
+            nud_autorefreshinterval.Enabled = serialPortOpened;
+        }
+
+        private void bt_scan_ports_Click(object sender, EventArgs e)
+        {
+            comboBox_com_ports.Items.Clear();
+            comboBox_com_ports.Items.AddRange(SerialPort.GetPortNames());
+            if (comboBox_com_ports.Items.Count > 0)
+                comboBox_com_ports.SelectedIndex = 0;
+
+            refreshUI();
+        }
+
         private void bt_connect_Click(object sender, EventArgs e)
         {
+            if (sp == null)
+            {
+                if (comboBox_com_ports.SelectedIndex < 0)
+                {
+                    MessageBox.Show("Please select COM Port");
+                    return;
+                }
+
+                string comport = comboBox_com_ports.SelectedItem.ToString();
+                sp = new SerialPort(comport, 1152000, Parity.None, 8);
+                sp.StopBits = StopBits.One;
+                sp.ReadTimeout = 100;
+                sp.WriteTimeout = 100;
+            }
+
             if (!sp.IsOpen)
             {
                 sp.Open();
@@ -108,6 +160,33 @@ namespace F103_pmsm_sensored
                     thread.Start();
                 }
             }
+
+            // update buttons state
+            refreshUI();
+
+            // check checkbox autorefresh and start timer autorefresh if needed
+            chbox_autorefresh_CheckedChanged(null, null);
+        }
+
+        private void bt_close_port_Click(object sender, EventArgs e)
+        {
+            if (sp != null && sp.IsOpen)
+            {
+                // stop data
+                bt_sendstop_Click(null, null);
+                Thread.Sleep(100);
+                // close port
+                sp.Close();
+                // finish thread
+                if (thread != null)
+                {
+                    // wait for serial monitor thread to stop
+                    thread.Join();
+                    thread = null;
+                }
+            }
+
+            refreshUI();
         }
 
         private Stopwatch sw = new Stopwatch();
@@ -282,31 +361,6 @@ namespace F103_pmsm_sensored
             {
                 cmd = CmdPacket.CMD_GET_VARINFO
             });
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-
-        }
-
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            // stop refresh
-            autoRefreshTimer.Stop();
-
-            // close serial port
-            if (sp != null && sp.IsOpen)
-            {
-                bt_sendstop_Click(null, null);
-                Thread.Sleep(100);
-                sp.Close();
-                if (thread != null)
-                {
-                    // wait for serial monitor thread to stop
-                    thread.Join();
-                    thread = null;
-                }
-            }
         }
 
         private void bt_sendstart_Click(object sender, EventArgs e)
@@ -611,6 +665,9 @@ namespace F103_pmsm_sensored
         }
     }
 
+    /// <summary>
+    /// Packet as command to uP
+    /// </summary>
     [Serializable]
     public class CmdPacket
     {
@@ -636,7 +693,9 @@ namespace F103_pmsm_sensored
         }
     }
 
-    // 2ms data packet
+    /// <summary>
+    /// Base data packet, contains only header
+    /// </summary>
     public class DataPacket
     {
         public static readonly int headerSize = 12;
@@ -651,6 +710,9 @@ namespace F103_pmsm_sensored
         public uint timestamp;
     }
 
+    /// <summary>
+    /// Data packet of working state. Includes 100us-interval data and 2ms-interval data    
+    /// </summary>
     public class DataPacketNormal : DataPacket
     {
         public static readonly int dataSize = 2;
@@ -669,6 +731,15 @@ namespace F103_pmsm_sensored
         public List<List<short>> data = new List<List<short>>();
         public List<short> data2ms = new List<short>();
 
+        /// <summary>
+        /// Constructor from raw data
+        /// </summary>
+        /// <param name="sig"></param>
+        /// <param name="size"></param>
+        /// <param name="type"></param>
+        /// <param name="timestamp"></param>
+        /// <param name="start"></param>
+        /// <param name="b"></param>
         public DataPacketNormal(ushort sig, ushort size, ushort type, uint timestamp, int start, ref byte[] b)
         {
             this.sig = sig;
@@ -697,6 +768,9 @@ namespace F103_pmsm_sensored
         }
     }
 
+    /// <summary>
+    /// Data packet of variable information
+    /// </summary>
     public class DataPacketVarInfo : DataPacket
     {
         public static readonly int varNameBufSize = 500;

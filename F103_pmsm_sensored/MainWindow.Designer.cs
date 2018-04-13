@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.bt_connect = new System.Windows.Forms.Button();
+            this.bt_open_port = new System.Windows.Forms.Button();
             this.bt_sendstart = new System.Windows.Forms.Button();
             this.bt_sendstop = new System.Windows.Forms.Button();
             this.bt_refresh = new System.Windows.Forms.Button();
@@ -38,13 +38,15 @@
             this.nud_numDataPoint = new System.Windows.Forms.NumericUpDown();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.bt_close_port = new System.Windows.Forms.Button();
+            this.comboBox_com_ports = new System.Windows.Forms.ComboBox();
             this.bt_set_speed = new System.Windows.Forms.Button();
             this.chbox_enable_set_speed = new System.Windows.Forms.CheckBox();
             this.tb_set_speed = new System.Windows.Forms.TextBox();
             this.bt_view_graph_XY = new System.Windows.Forms.Button();
             this.bt_view_graph_time = new System.Windows.Forms.Button();
-            this.bt_varinfo_acquire = new System.Windows.Forms.Button();
             this.bt_apply_Yaxis = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.nud_autorefreshinterval = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
@@ -62,6 +64,7 @@
             this.chbox_autoYaxis3 = new System.Windows.Forms.CheckBox();
             this.chbox_autoYaxis4 = new System.Windows.Forms.CheckBox();
             this.dgv_data2ms = new System.Windows.Forms.DataGridView();
+            this.bt_scan_ports = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nud_numDataPoint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -75,50 +78,50 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_data2ms)).BeginInit();
             this.SuspendLayout();
             // 
-            // bt_connect
+            // bt_open_port
             // 
-            this.bt_connect.Location = new System.Drawing.Point(12, 12);
-            this.bt_connect.Name = "bt_connect";
-            this.bt_connect.Size = new System.Drawing.Size(84, 37);
-            this.bt_connect.TabIndex = 0;
-            this.bt_connect.Text = "Connect";
-            this.bt_connect.UseVisualStyleBackColor = true;
-            this.bt_connect.Click += new System.EventHandler(this.bt_connect_Click);
+            this.bt_open_port.Location = new System.Drawing.Point(9, 37);
+            this.bt_open_port.Name = "bt_open_port";
+            this.bt_open_port.Size = new System.Drawing.Size(62, 28);
+            this.bt_open_port.TabIndex = 0;
+            this.bt_open_port.Text = "Open port";
+            this.bt_open_port.UseVisualStyleBackColor = true;
+            this.bt_open_port.Click += new System.EventHandler(this.bt_connect_Click);
             // 
             // bt_sendstart
             // 
-            this.bt_sendstart.Location = new System.Drawing.Point(12, 55);
+            this.bt_sendstart.Location = new System.Drawing.Point(139, 37);
             this.bt_sendstart.Name = "bt_sendstart";
-            this.bt_sendstart.Size = new System.Drawing.Size(79, 47);
+            this.bt_sendstart.Size = new System.Drawing.Size(62, 28);
             this.bt_sendstart.TabIndex = 3;
-            this.bt_sendstart.Text = "Send start cmd";
+            this.bt_sendstart.Text = "Start data";
             this.bt_sendstart.UseVisualStyleBackColor = true;
             this.bt_sendstart.Click += new System.EventHandler(this.bt_sendstart_Click);
             // 
             // bt_sendstop
             // 
-            this.bt_sendstop.Location = new System.Drawing.Point(97, 55);
+            this.bt_sendstop.Location = new System.Drawing.Point(204, 37);
             this.bt_sendstop.Name = "bt_sendstop";
-            this.bt_sendstop.Size = new System.Drawing.Size(88, 47);
+            this.bt_sendstop.Size = new System.Drawing.Size(62, 28);
             this.bt_sendstop.TabIndex = 4;
-            this.bt_sendstop.Text = "Send stop cmd";
+            this.bt_sendstop.Text = "Stop data";
             this.bt_sendstop.UseVisualStyleBackColor = true;
             this.bt_sendstop.Click += new System.EventHandler(this.bt_sendstop_Click);
             // 
             // bt_refresh
             // 
-            this.bt_refresh.Location = new System.Drawing.Point(197, 12);
+            this.bt_refresh.Location = new System.Drawing.Point(9, 82);
             this.bt_refresh.Name = "bt_refresh";
-            this.bt_refresh.Size = new System.Drawing.Size(95, 26);
+            this.bt_refresh.Size = new System.Drawing.Size(80, 40);
             this.bt_refresh.TabIndex = 6;
-            this.bt_refresh.Text = "Refresh last data";
+            this.bt_refresh.Text = "Refresh graph";
             this.bt_refresh.UseVisualStyleBackColor = true;
             this.bt_refresh.Click += new System.EventHandler(this.bt_refresh_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 147);
+            this.label1.Location = new System.Drawing.Point(8, 165);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(83, 13);
             this.label1.TabIndex = 8;
@@ -141,7 +144,7 @@
             // 
             // nud_numDataPoint
             // 
-            this.nud_numDataPoint.Location = new System.Drawing.Point(12, 163);
+            this.nud_numDataPoint.Location = new System.Drawing.Point(97, 163);
             this.nud_numDataPoint.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -182,17 +185,20 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.bt_scan_ports);
+            this.splitContainer2.Panel1.Controls.Add(this.bt_close_port);
+            this.splitContainer2.Panel1.Controls.Add(this.comboBox_com_ports);
             this.splitContainer2.Panel1.Controls.Add(this.bt_set_speed);
             this.splitContainer2.Panel1.Controls.Add(this.chbox_enable_set_speed);
             this.splitContainer2.Panel1.Controls.Add(this.tb_set_speed);
             this.splitContainer2.Panel1.Controls.Add(this.bt_view_graph_XY);
             this.splitContainer2.Panel1.Controls.Add(this.bt_view_graph_time);
-            this.splitContainer2.Panel1.Controls.Add(this.bt_varinfo_acquire);
-            this.splitContainer2.Panel1.Controls.Add(this.bt_connect);
+            this.splitContainer2.Panel1.Controls.Add(this.bt_open_port);
             this.splitContainer2.Panel1.Controls.Add(this.bt_sendstart);
             this.splitContainer2.Panel1.Controls.Add(this.bt_sendstop);
             this.splitContainer2.Panel1.Controls.Add(this.bt_refresh);
             this.splitContainer2.Panel1.Controls.Add(this.bt_apply_Yaxis);
+            this.splitContainer2.Panel1.Controls.Add(this.label4);
             this.splitContainer2.Panel1.Controls.Add(this.label1);
             this.splitContainer2.Panel1.Controls.Add(this.label3);
             this.splitContainer2.Panel1.Controls.Add(this.nud_numDataPoint);
@@ -219,9 +225,28 @@
             this.splitContainer2.SplitterDistance = 341;
             this.splitContainer2.TabIndex = 17;
             // 
+            // bt_close_port
+            // 
+            this.bt_close_port.Location = new System.Drawing.Point(71, 37);
+            this.bt_close_port.Name = "bt_close_port";
+            this.bt_close_port.Size = new System.Drawing.Size(62, 28);
+            this.bt_close_port.TabIndex = 23;
+            this.bt_close_port.Text = "Close port";
+            this.bt_close_port.UseVisualStyleBackColor = true;
+            this.bt_close_port.Click += new System.EventHandler(this.bt_close_port_Click);
+            // 
+            // comboBox_com_ports
+            // 
+            this.comboBox_com_ports.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_com_ports.FormattingEnabled = true;
+            this.comboBox_com_ports.Location = new System.Drawing.Point(71, 9);
+            this.comboBox_com_ports.Name = "comboBox_com_ports";
+            this.comboBox_com_ports.Size = new System.Drawing.Size(114, 21);
+            this.comboBox_com_ports.TabIndex = 22;
+            // 
             // bt_set_speed
             // 
-            this.bt_set_speed.Location = new System.Drawing.Point(191, 113);
+            this.bt_set_speed.Location = new System.Drawing.Point(191, 130);
             this.bt_set_speed.Name = "bt_set_speed";
             this.bt_set_speed.Size = new System.Drawing.Size(75, 23);
             this.bt_set_speed.TabIndex = 21;
@@ -232,7 +257,7 @@
             // chbox_enable_set_speed
             // 
             this.chbox_enable_set_speed.AutoSize = true;
-            this.chbox_enable_set_speed.Location = new System.Drawing.Point(12, 117);
+            this.chbox_enable_set_speed.Location = new System.Drawing.Point(12, 134);
             this.chbox_enable_set_speed.Name = "chbox_enable_set_speed";
             this.chbox_enable_set_speed.Size = new System.Drawing.Size(100, 17);
             this.chbox_enable_set_speed.TabIndex = 20;
@@ -242,14 +267,14 @@
             // 
             // tb_set_speed
             // 
-            this.tb_set_speed.Location = new System.Drawing.Point(118, 115);
+            this.tb_set_speed.Location = new System.Drawing.Point(118, 132);
             this.tb_set_speed.Name = "tb_set_speed";
             this.tb_set_speed.Size = new System.Drawing.Size(67, 20);
             this.tb_set_speed.TabIndex = 19;
             // 
             // bt_view_graph_XY
             // 
-            this.bt_view_graph_XY.Location = new System.Drawing.Point(128, 315);
+            this.bt_view_graph_XY.Location = new System.Drawing.Point(110, 313);
             this.bt_view_graph_XY.Name = "bt_view_graph_XY";
             this.bt_view_graph_XY.Size = new System.Drawing.Size(102, 24);
             this.bt_view_graph_XY.TabIndex = 17;
@@ -259,7 +284,7 @@
             // 
             // bt_view_graph_time
             // 
-            this.bt_view_graph_time.Location = new System.Drawing.Point(12, 313);
+            this.bt_view_graph_time.Location = new System.Drawing.Point(9, 312);
             this.bt_view_graph_time.Name = "bt_view_graph_time";
             this.bt_view_graph_time.Size = new System.Drawing.Size(95, 26);
             this.bt_view_graph_time.TabIndex = 16;
@@ -267,25 +292,24 @@
             this.bt_view_graph_time.UseVisualStyleBackColor = true;
             this.bt_view_graph_time.Click += new System.EventHandler(this.bt_view_graph_time_Click);
             // 
-            // bt_varinfo_acquire
-            // 
-            this.bt_varinfo_acquire.Location = new System.Drawing.Point(102, 12);
-            this.bt_varinfo_acquire.Name = "bt_varinfo_acquire";
-            this.bt_varinfo_acquire.Size = new System.Drawing.Size(55, 37);
-            this.bt_varinfo_acquire.TabIndex = 15;
-            this.bt_varinfo_acquire.Text = "Acquire var info";
-            this.bt_varinfo_acquire.UseVisualStyleBackColor = true;
-            this.bt_varinfo_acquire.Click += new System.EventHandler(this.bt_varinfo_acquire_Click);
-            // 
             // bt_apply_Yaxis
             // 
-            this.bt_apply_Yaxis.Location = new System.Drawing.Point(245, 264);
+            this.bt_apply_Yaxis.Location = new System.Drawing.Point(208, 201);
             this.bt_apply_Yaxis.Name = "bt_apply_Yaxis";
-            this.bt_apply_Yaxis.Size = new System.Drawing.Size(79, 35);
+            this.bt_apply_Yaxis.Size = new System.Drawing.Size(58, 97);
             this.bt_apply_Yaxis.TabIndex = 6;
             this.bt_apply_Yaxis.Text = "Apply Yaxis manual";
             this.bt_apply_Yaxis.UseVisualStyleBackColor = true;
             this.bt_apply_Yaxis.Click += new System.EventHandler(this.bt_apply_Yaxis_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 13);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(53, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "COM Port";
             // 
             // label3
             // 
@@ -303,7 +327,7 @@
             0,
             0,
             0});
-            this.nud_autorefreshinterval.Location = new System.Drawing.Point(197, 80);
+            this.nud_autorefreshinterval.Location = new System.Drawing.Point(165, 99);
             this.nud_autorefreshinterval.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -315,7 +339,7 @@
             0,
             0});
             this.nud_autorefreshinterval.Name = "nud_autorefreshinterval";
-            this.nud_autorefreshinterval.Size = new System.Drawing.Size(95, 20);
+            this.nud_autorefreshinterval.Size = new System.Drawing.Size(69, 20);
             this.nud_autorefreshinterval.TabIndex = 11;
             this.nud_autorefreshinterval.Value = new decimal(new int[] {
             500,
@@ -327,16 +351,18 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(194, 64);
+            this.label2.Location = new System.Drawing.Point(95, 102);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(101, 13);
+            this.label2.Size = new System.Drawing.Size(64, 13);
             this.label2.TabIndex = 12;
-            this.label2.Text = "Auto refresh interval";
+            this.label2.Text = "Interval (ms)";
             // 
             // chbox_autorefresh
             // 
             this.chbox_autorefresh.AutoSize = true;
-            this.chbox_autorefresh.Location = new System.Drawing.Point(197, 44);
+            this.chbox_autorefresh.Checked = true;
+            this.chbox_autorefresh.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbox_autorefresh.Location = new System.Drawing.Point(95, 82);
             this.chbox_autorefresh.Name = "chbox_autorefresh";
             this.chbox_autorefresh.Size = new System.Drawing.Size(83, 17);
             this.chbox_autorefresh.TabIndex = 13;
@@ -348,13 +374,13 @@
             // 
             this.tb_minY1.Location = new System.Drawing.Point(12, 202);
             this.tb_minY1.Name = "tb_minY1";
-            this.tb_minY1.Size = new System.Drawing.Size(79, 20);
+            this.tb_minY1.Size = new System.Drawing.Size(61, 20);
             this.tb_minY1.TabIndex = 12;
             this.tb_minY1.Text = "-8000";
             // 
             // tb_maxY1
             // 
-            this.tb_maxY1.Location = new System.Drawing.Point(97, 202);
+            this.tb_maxY1.Location = new System.Drawing.Point(79, 201);
             this.tb_maxY1.Name = "tb_maxY1";
             this.tb_maxY1.Size = new System.Drawing.Size(79, 20);
             this.tb_maxY1.TabIndex = 12;
@@ -364,13 +390,13 @@
             // 
             this.tb_minY2.Location = new System.Drawing.Point(12, 228);
             this.tb_minY2.Name = "tb_minY2";
-            this.tb_minY2.Size = new System.Drawing.Size(79, 20);
+            this.tb_minY2.Size = new System.Drawing.Size(61, 20);
             this.tb_minY2.TabIndex = 12;
             this.tb_minY2.Text = "-8000";
             // 
             // tb_maxY2
             // 
-            this.tb_maxY2.Location = new System.Drawing.Point(97, 228);
+            this.tb_maxY2.Location = new System.Drawing.Point(79, 227);
             this.tb_maxY2.Name = "tb_maxY2";
             this.tb_maxY2.Size = new System.Drawing.Size(79, 20);
             this.tb_maxY2.TabIndex = 12;
@@ -380,13 +406,13 @@
             // 
             this.tb_minY3.Location = new System.Drawing.Point(12, 254);
             this.tb_minY3.Name = "tb_minY3";
-            this.tb_minY3.Size = new System.Drawing.Size(79, 20);
+            this.tb_minY3.Size = new System.Drawing.Size(61, 20);
             this.tb_minY3.TabIndex = 12;
             this.tb_minY3.Text = "-8000";
             // 
             // tb_maxY3
             // 
-            this.tb_maxY3.Location = new System.Drawing.Point(97, 254);
+            this.tb_maxY3.Location = new System.Drawing.Point(79, 253);
             this.tb_maxY3.Name = "tb_maxY3";
             this.tb_maxY3.Size = new System.Drawing.Size(79, 20);
             this.tb_maxY3.TabIndex = 12;
@@ -396,13 +422,13 @@
             // 
             this.tb_minY4.Location = new System.Drawing.Point(12, 279);
             this.tb_minY4.Name = "tb_minY4";
-            this.tb_minY4.Size = new System.Drawing.Size(79, 20);
+            this.tb_minY4.Size = new System.Drawing.Size(61, 20);
             this.tb_minY4.TabIndex = 12;
             this.tb_minY4.Text = "-8000";
             // 
             // tb_maxY4
             // 
-            this.tb_maxY4.Location = new System.Drawing.Point(97, 279);
+            this.tb_maxY4.Location = new System.Drawing.Point(79, 278);
             this.tb_maxY4.Name = "tb_maxY4";
             this.tb_maxY4.Size = new System.Drawing.Size(79, 20);
             this.tb_maxY4.TabIndex = 12;
@@ -413,7 +439,7 @@
             this.chbox_autoYaxis1.AutoSize = true;
             this.chbox_autoYaxis1.Checked = true;
             this.chbox_autoYaxis1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbox_autoYaxis1.Location = new System.Drawing.Point(183, 204);
+            this.chbox_autoYaxis1.Location = new System.Drawing.Point(165, 204);
             this.chbox_autoYaxis1.Name = "chbox_autoYaxis1";
             this.chbox_autoYaxis1.Size = new System.Drawing.Size(48, 17);
             this.chbox_autoYaxis1.TabIndex = 14;
@@ -424,7 +450,7 @@
             // chbox_autoYaxis2
             // 
             this.chbox_autoYaxis2.AutoSize = true;
-            this.chbox_autoYaxis2.Location = new System.Drawing.Point(182, 230);
+            this.chbox_autoYaxis2.Location = new System.Drawing.Point(164, 230);
             this.chbox_autoYaxis2.Name = "chbox_autoYaxis2";
             this.chbox_autoYaxis2.Size = new System.Drawing.Size(48, 17);
             this.chbox_autoYaxis2.TabIndex = 14;
@@ -435,7 +461,7 @@
             // chbox_autoYaxis3
             // 
             this.chbox_autoYaxis3.AutoSize = true;
-            this.chbox_autoYaxis3.Location = new System.Drawing.Point(182, 256);
+            this.chbox_autoYaxis3.Location = new System.Drawing.Point(164, 256);
             this.chbox_autoYaxis3.Name = "chbox_autoYaxis3";
             this.chbox_autoYaxis3.Size = new System.Drawing.Size(48, 17);
             this.chbox_autoYaxis3.TabIndex = 14;
@@ -446,7 +472,7 @@
             // chbox_autoYaxis4
             // 
             this.chbox_autoYaxis4.AutoSize = true;
-            this.chbox_autoYaxis4.Location = new System.Drawing.Point(182, 281);
+            this.chbox_autoYaxis4.Location = new System.Drawing.Point(164, 281);
             this.chbox_autoYaxis4.Name = "chbox_autoYaxis4";
             this.chbox_autoYaxis4.Size = new System.Drawing.Size(48, 17);
             this.chbox_autoYaxis4.TabIndex = 14;
@@ -470,6 +496,16 @@
             this.dgv_data2ms.Size = new System.Drawing.Size(339, 167);
             this.dgv_data2ms.TabIndex = 15;
             this.dgv_data2ms.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_data2ms_CellDoubleClick);
+            // 
+            // bt_scan_ports
+            // 
+            this.bt_scan_ports.Location = new System.Drawing.Point(191, 8);
+            this.bt_scan_ports.Name = "bt_scan_ports";
+            this.bt_scan_ports.Size = new System.Drawing.Size(75, 23);
+            this.bt_scan_ports.TabIndex = 24;
+            this.bt_scan_ports.Text = "Scan ports";
+            this.bt_scan_ports.UseVisualStyleBackColor = true;
+            this.bt_scan_ports.Click += new System.EventHandler(this.bt_scan_ports_Click);
             // 
             // MainWindow
             // 
@@ -500,7 +536,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button bt_connect;
+        private System.Windows.Forms.Button bt_open_port;
         private System.Windows.Forms.Button bt_sendstart;
         private System.Windows.Forms.Button bt_sendstop;
         private System.Windows.Forms.Button bt_refresh;
@@ -527,12 +563,15 @@
         private System.Windows.Forms.CheckBox chbox_autoYaxis1;
         private System.Windows.Forms.DataGridView dgv_data2ms;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.Button bt_varinfo_acquire;
         private System.Windows.Forms.Button bt_view_graph_XY;
         private System.Windows.Forms.Button bt_view_graph_time;
         private System.Windows.Forms.Button bt_set_speed;
         private System.Windows.Forms.CheckBox chbox_enable_set_speed;
         private System.Windows.Forms.TextBox tb_set_speed;
+        private System.Windows.Forms.ComboBox comboBox_com_ports;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button bt_close_port;
+        private System.Windows.Forms.Button bt_scan_ports;
     }
 }
 
